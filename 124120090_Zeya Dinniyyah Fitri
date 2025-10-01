@@ -1,0 +1,68 @@
+CHALLENGES 1 
+#  Kelas induk
+class Sensor:
+    def __init__(self, id_sensor, lokasi, jenis):
+        self.id_sensor = id_sensor
+        self.lokasi = lokasi
+        self.jenis = jenis
+    def info(self):
+        return f"Sensor ID: {self.id_sensor}, Lokasi: {self.lokasi}, Jenis: {self.jenis}"
+# Kelas turunan
+class SensorSeismik(Sensor):
+    def __init__(self, id_sensor, lokasi, jenis, frekuensi_sampling):
+        super().__init__(id_sensor, lokasi, jenis)
+        self.frekuensi_sampling = frekuensi_sampling
+
+    def jumlah_sampel(self, durasi_detik):
+        """
+        Hitung jumlah data amplitudo berdasarkan durasi (dalam detik).
+        """
+        return self.frekuensi_sampling * durasi_detik
+# Contoh penggunaan
+if __name__ == "__main__":
+    sensor1 = Sensor("S001", "Jakarta", "Umum")
+    print(sensor1.info())
+    sensor_seismik = SensorSeismik("SS01", "Bandung", "Seismik", 100)  # 100 Hz
+    print(sensor_seismik.info())
+    print("Jumlah sampel dalam 10 detik:", sensor_seismik.jumlah_sampel(10))
+
+
+CHALLENGES 2
+# from abc import ABC, abstractmethod
+# Kelas abstrak
+class Survey(ABC):
+    def __init__(self, lokasi, metode):
+        self.lokasi = lokasi
+        self.metode = metode
+    @abstractmethod
+    def processing(self):
+        pass
+# Turunan 1: Seismic Survey
+class SeismicSurvey(Survey):
+    def __init__(self, lokasi):
+        super().__init__(lokasi, "Seismik")
+    def processing(self):
+        print(f"[Seismic Survey] Lokasi: {self.lokasi} -> Processing: Filtering data seismik...")
+# Turunan 2: Gravity Survey
+class GravitySurvey(Survey):
+    def __init__(self, lokasi):
+        super().__init__(lokasi, "Gravitasi")
+    def processing(self):
+        print(f"[Gravity Survey] Lokasi: {self.lokasi} -> Processing: Upward continuation data gravitasi...")
+# Turunan 3: Magnetic Survey
+class MagnetikSurvey(Survey):
+    def __init__(self, lokasi):
+        super().__init__(lokasi, "Magnetik")
+    def processing(self):
+        print(f"[Magnetik Survey] Lokasi: {self.lokasi} -> Processing: Anomaly mapping data magnetik...")
+# Contoh penggunaan
+if __name__ == "__main__":
+    # Membuat daftar objek survey
+    surveys = [
+        SeismicSurvey("Bandung"),
+        GravitySurvey("Papua"),
+        MagnetikSurvey("Kalimantan")
+    ]
+    # Iterasi untuk memanggil method processing()
+    for s in surveys:
+        s.processing()
